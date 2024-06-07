@@ -7,6 +7,8 @@ module MaintenanceTasks
   #
   # @api private
   module TasksHelper
+    MAX_INCLUSION_ITEMS = 1000
+
     STATUS_COLOURS = {
       "new" => ["is-primary"],
       "enqueued" => ["is-primary is-light"],
@@ -101,10 +103,21 @@ module MaintenanceTasks
       )
     end
 
-    # Resolves values covered by the inclusion validator for a task attribute.
-    # Only Arrays are supported.
-    # Procs and lambdas are also supported, but only if they take no arguments and return an Array.
-    # Option types such as Symbols, and Range are not supported and return nil.
+    # Resolves values covered by the inclusion validator for a task attribute,
+    # but only if it can be resolved to an array in a stateless manner.
+    #
+    # Examples of supported constraints:
+    # - Arrays
+    # - Enumerable that can be converted to an Array
+    # - Procs and lambdas, but only if they take no arguments and return a value meeting the requirements above.
+    #
+    # Examples of unsupported constraints, which would return nil:
+    # - Symbols (which would normally resolve to an instance method)
+    # - Procs and lambdas that take an argument (which would be the instance)
+    # - Unbounded ranges (e.g. `1..`)
+    #
+    # If the resulting Array is larger than #MAX_INCLUSION_ITEMS, the method will return nil.
+    # This is meant to make sure the process does not misbehave if the inclusion range is giant or infinite.
     #
     # Returned values are used to populate a dropdown list of options.
     #
@@ -120,6 +133,12 @@ module MaintenanceTasks
 
       in_option = inclusion_validator.options[:in] || inclusion_validator.options[:within]
       in_option = in_option.call if in_option.is_a?(Proc) && in_option.arity.zero?
+
+      if in_option.is_a?(Enumerable)
+        items = in_option.take(MAX_INCLUSION_ITEMS + 1).to_a
+        in_option = items if items.size <= MAX_INCLUSION_ITEMS
+      end
+
       in_option if in_option.is_a?(Array)
     end
 

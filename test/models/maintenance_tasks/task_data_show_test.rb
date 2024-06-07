@@ -93,6 +93,8 @@ module MaintenanceTasks
           "text_integer_attr_proc_arg",
           "text_integer_attr_undefined_symbol",
           "text_integer_attr_unbounded_range",
+          "text_integer_attr_bounded_range",
+          "text_integer_attr_enumerable",
         ],
         TaskDataShow.new("Maintenance::ParamsTask").parameter_names,
       )

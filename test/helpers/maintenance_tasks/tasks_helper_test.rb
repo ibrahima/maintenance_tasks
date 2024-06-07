@@ -96,6 +96,8 @@ module MaintenanceTasks
         "integer_dropdown_attr",
         "boolean_dropdown_attr",
         "text_integer_attr_proc_no_arg",
+        "text_integer_attr_bounded_range",
+        "text_integer_attr_enumerable",
       ].each do |attribute|
         assert_match "Select a value", markup(attribute).squish
       end
