@@ -90,6 +90,7 @@ module MaintenanceTasks
           "integer_dropdown_attr",
           "boolean_dropdown_attr",
           "text_integer_attr_proc_no_arg",
+          "text_integer_attr_proc_arg",
           "text_integer_attr_undefined_symbol",
           "text_integer_attr_unbounded_range",
         ],
