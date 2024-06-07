@@ -89,9 +89,9 @@ module MaintenanceTasks
           "boolean_attr",
           "integer_dropdown_attr",
           "boolean_dropdown_attr",
-          "text_integer_attr",
-          "text_integer_attr2",
-          "text_integer_attr3",
+          "text_integer_attr_proc_no_arg",
+          "text_integer_attr_undefined_symbol",
+          "text_integer_attr_unbounded_range",
         ],
         TaskDataShow.new("Maintenance::ParamsTask").parameter_names,
       )
